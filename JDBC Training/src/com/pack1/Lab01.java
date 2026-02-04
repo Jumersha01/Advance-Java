@@ -3,6 +3,7 @@ package com.pack1;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.Types;
 
 public class Lab01 {
 	String driver ="oracle.jdbc.OracleDriver";
@@ -27,24 +28,31 @@ public class Lab01 {
 	void m1 () {
 		try {
 			Connection con = connect();
-			CallableStatement cs = con.prepareCall("{cal insertData(?,?,?,?,?,?,?,?,?)}");
-			cs.setString(1, "1");
-			cs.setString(2, "35");
-			cs.setString(3, "Junaid");
-			cs.setString(4,"Science");
-			cs.setString(5, "4");
-			cs.setString(6,"Jalgaon");
-			cs.setInt(7, 123);
-			cs.setString(8,"junnu@gmail.com");
-			cs.setInt(9,902142);
+			CallableStatement cs = con.prepareCall("{call insertData(?,?,?,?,?,?,?,?,?)}");
+			int id = Integer.parseInt(IO.readln("Enter Student Id:"));
+			cs.setInt(1,id);
+			cs.registerOutParameter(2, Types.VARCHAR);
+			cs.registerOutParameter(3, Types.VARCHAR);
+			cs.registerOutParameter(4, Types.INTEGER);
+			cs.registerOutParameter(5, Types.VARCHAR);
+			cs.registerOutParameter(6, Types.VARCHAR);
+			cs.registerOutParameter(7, Types.INTEGER);
+			cs.registerOutParameter(8, Types.VARCHAR);
+			cs.registerOutParameter(9, Types.BIGINT);
 			
-			boolean isCame = cs.execute();
-			if(isCame) {
-				IO.println("Procedure execute");
-			}
-			else{
-				IO.println("Faced some Problem");
-			}
+			IO.println("id"+id);
+			IO.println("Name:"+cs.getString(2));
+			IO.println("Branch"+cs.getString(3));
+			IO.println("Roll no"+cs.getInt(4));
+			IO.println("HouseNO:"+cs.getString(5));
+			IO.println("City"+cs.getString(6));
+			IO.println("Pincode"+cs.getInt(7));
+			IO.println("Mailid:"+cs.getString(8));
+			IO.println("phone"+cs.getLong(9));
+			
+			
+			cs.execute();
+			
 			
 			
 		}
